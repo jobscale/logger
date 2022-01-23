@@ -1,3 +1,4 @@
+/* eslint-env browser */
 /* global __fname, __line */
 
 const LogLevels = [
@@ -10,13 +11,14 @@ const LogLevels = [
 ];
 
 const singleton = (() => {
-  if (!process.loggerSingleton) {
-    process.loggerSingleton = {
+  const obj = global || window;
+  if (!obj.loggerSingleton) {
+    obj.loggerSingleton = {
       native() {},
       instance: undefined,
     };
   }
-  return process.loggerSingleton;
+  return obj.loggerSingleton;
 })();
 
 class Logger {
