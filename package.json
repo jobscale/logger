@@ -1,0 +1,31 @@
+{
+  "name": "@jobscale/logger",
+  "version": "0.0.1",
+  "description": "@jobscale/logger",
+  "keywords": [
+    "trace",
+    "logger"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jobscale/logger.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint && jest --runInBand --coverage --collectCoverage"
+  },
+  "pre-commit": [
+    "test"
+  ],
+  "author": "jobscale <jobscale@users.noreply.github.com>",
+  "devDependencies": {
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^25.7.0",
+    "jest": "^27.4.7",
+    "pre-commit": "^1.2.2"
+  },
+  "license": "MIT"
+}
