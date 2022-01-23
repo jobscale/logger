@@ -10,15 +10,15 @@ const LogLevels = [
   'debug',
 ];
 
+const globalObject = global || window;
 const singleton = (() => {
-  const obj = global || window;
-  if (!obj.loggerSingleton) {
-    obj.loggerSingleton = {
+  if (!globalObject.loggerSingleton) {
+    globalObject.loggerSingleton = {
       native() {},
       instance: undefined,
     };
   }
-  return obj.loggerSingleton;
+  return globalObject.loggerSingleton;
 })();
 
 class Logger {
@@ -58,10 +58,10 @@ class Logger {
   }
 
   initializeProperty() {
-    Object.defineProperty(global, '__line', {
+    Object.defineProperty(globalObject, '__line', {
       get() { return new Error().stack.split('\n')[3].split(':').reverse()[1]; },
     });
-    Object.defineProperty(global, '__fname', {
+    Object.defineProperty(globalObject, '__fname', {
       get() { return new Error().stack.split('\n')[3].split(/[: ]/).reverse()[2]; },
     });
   }
