@@ -1,6 +1,8 @@
 # @jobscale/logger
 
-## Log Level
+## Options
+
+### logLevel
 
   'fail',
   'error',
@@ -8,6 +10,8 @@
   'info',
   'trace',
   'debug',
+
+default 'info'
 
 ## Installation
 
