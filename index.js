@@ -25,7 +25,7 @@ class Logger {
   constructor(options) {
     this.logger = this;
     this.Logger = Logger;
-    this.logLevel = (options && options.logLevel ? options.logLevel : 'warn').toLowerCase();
+    this.logLevel = (options && options.logLevel ? options.logLevel : 'info').toLowerCase();
     this.initialize();
   }
 
