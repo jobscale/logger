@@ -1,9 +1,8 @@
 module.exports = {
   extends: 'airbnb-base',
   globals: {
-    logger: 'readonly',
-    spawn: 'readonly',
-    fetch: 'readonly',
+    __fname: 'readonly',
+    __line: 'readonly',
   },
   rules: {
     indent: ['error', 2, { MemberExpression: 0 }],
@@ -12,6 +11,8 @@ module.exports = {
     'no-await-in-loop': 'off',
   },
   env: {
+    node: true,
+    browser: true,
     'jest/globals': true,
   },
   plugins: [

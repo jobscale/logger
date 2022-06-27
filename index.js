@@ -1,13 +1,9 @@
-/* eslint-env browser */
-/* global __fname, __line */
-
 const LogLevels = [
-  'fail',
   'error',
   'warn',
   'info',
-  'trace',
   'debug',
+  'trace',
 ];
 
 const globalObject = global || window;
@@ -33,31 +29,28 @@ class Logger {
     const { log } = console;
     if (log !== singleton.native) {
       singleton.instance = this;
-      this.initializeProperty();
+      this.defineProperty();
       this.std = {};
     } else {
       this.std = singleton.instance.std;
     }
-    const std = console;
+    const mummy = console;
     LogLevels.forEach(logLevel => {
-      if (!this.std[logLevel]) this.std[logLevel] = std[logLevel];
+      if (!this.std[logLevel]) this.std[logLevel] = mummy[logLevel];
       const level = LogLevels.indexOf(logLevel);
       this[logLevel] = (...args) => {
         if (LogLevels.indexOf(this.logLevel) < level) return;
-        const func = () => {
-          if (logLevel === 'trace') return this.std.warn;
-          if (!this.std[logLevel]) return this.std.error;
-          return this.std[logLevel];
-        };
-        func()(__fname, __line, `[${logLevel}]`, ...args);
+        const logger = this.std[logLevel];
+        const LEVEL = `[${logLevel.toUpperCase()}]`;
+        logger(__fname, __line, LEVEL, ...args);
       };
-      if (std[logLevel]) std[logLevel] = singleton.native;
+      if (mummy[logLevel]) mummy[logLevel] = singleton.native;
     });
-    std.log = singleton.native;
-    std.alert = singleton.native;
+    mummy.log = singleton.native;
+    mummy.alert = singleton.native;
   }
 
-  initializeProperty() {
+  defineProperty() {
     Object.defineProperty(globalObject, '__line', {
       get() { return new Error().stack.split('\n')[3].split(':').reverse()[1]; },
     });
