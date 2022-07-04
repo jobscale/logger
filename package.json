@@ -1,6 +1,6 @@
 {
   "name": "@jobscale/logger",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "@jobscale/logger",
   "keywords": [
     "trace",
@@ -13,7 +13,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint && jest --runInBand --coverage --collectCoverage"
+    "test": "jest --runInBand --coverage --collectCoverage"
   },
   "pre-commit": [
     "test"

@@ -21,8 +21,13 @@ class Logger {
   constructor(options) {
     this.logger = this;
     this.Logger = Logger;
-    this.logLevel = (options && options.logLevel ? options.logLevel : 'info').toLowerCase();
+    this.config(options);
     this.initialize();
+  }
+
+  config(options) {
+    this.logLevel = (options && options.logLevel ? options.logLevel : 'info').toLowerCase();
+    this.level = LogLevels.indexOf(this.logLevel);
   }
 
   initialize() {
@@ -39,7 +44,7 @@ class Logger {
       if (!this.std[logLevel]) this.std[logLevel] = mummy[logLevel];
       const level = LogLevels.indexOf(logLevel);
       this[logLevel] = (...args) => {
-        if (LogLevels.indexOf(this.logLevel) < level) return;
+        if (this.level < level) return;
         const logger = this.std[logLevel];
         const LEVEL = `[${logLevel.toUpperCase()}]`;
         logger(__fname, __line, LEVEL, ...args);
