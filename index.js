@@ -60,7 +60,7 @@ class Logger {
       get() { return new Error().stack.split('\n')[3].split(':').reverse()[1]; },
     });
     Object.defineProperty(globalObject, '__fname', {
-      get() { return new Error().stack.split('\n')[3].split(/[: ]/).reverse()[2]; },
+      get() { return new Error().stack.split('\n')[3].split(/[:( ]/).reverse()[2]; },
     });
   }
 }
