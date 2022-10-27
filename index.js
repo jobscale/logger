@@ -7,7 +7,7 @@
     'trace',
   ];
 
-  const globalObject = global || window;
+  const globalObject = typeof global !== 'undefined' ? global : window;
   const singleton = (() => {
     if (!globalObject.loggerSingleton) {
       globalObject.loggerSingleton = {
@@ -48,7 +48,7 @@
           if (this.level < level) return;
           const logger = this.std[logLevel];
           const LEVEL = `[${logLevel.toUpperCase()}]`;
-          logger(__fname, __line, LEVEL, ...args);
+          logger(__fname, __line, LEVEL, ...args); // eslint-disable-line
         };
         if (mummy[logLevel]) mummy[logLevel] = singleton.native;
       });

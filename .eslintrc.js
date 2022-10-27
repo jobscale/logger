@@ -1,8 +1,6 @@
 module.exports = {
   extends: 'airbnb-base',
   globals: {
-    __fname: 'readonly',
-    __line: 'readonly',
   },
   rules: {
     indent: ['error', 2, { MemberExpression: 0 }],
