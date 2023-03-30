@@ -1,9 +1,9 @@
 node_modules/
 .idea/
+.vscode/
 .env.json
 .env.js
 .config.json
 .config.js
 coverage/
-.vscode/
 package-lock.json
