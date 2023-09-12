@@ -27,3 +27,11 @@ const logger = new Logger({ logLevel: 'info' });
 logger.info({ timestamp: Date.now() });
 logger.trace('Do not output');
 ```
+
+## Using Browser
+```html
+<script src="https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js"></script>
+<script>
+  logger.info('hello', Date.now());
+</script>
+```

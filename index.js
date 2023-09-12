@@ -1,3 +1,4 @@
+/* global __line, __fname */
 (() => {
   const LogLevels = [
     'error',
@@ -7,16 +8,15 @@
     'trace',
   ];
 
-  const globalObject = typeof global !== 'undefined' ? global : window;
-  const singleton = (() => {
-    if (!globalObject.loggerSingleton) {
-      globalObject.loggerSingleton = {
-        native() {},
-        instance: undefined,
-      };
-    }
-    return globalObject.loggerSingleton;
-  })();
+  if (typeof __line === 'undefined') {
+    const globalObject = typeof global !== 'undefined' ? global : window;
+    Object.defineProperty(globalObject, '__line', {
+      get() { return new Error().stack.split('\n')[3].split(':').reverse()[1]; },
+    });
+    Object.defineProperty(globalObject, '__fname', {
+      get() { return new Error().stack.split('\n')[3].split(/[:( ]/).reverse()[2]; },
+    });
+  }
 
   class Logger {
     constructor(options) {
@@ -27,42 +27,23 @@
     }
 
     config(options) {
-      this.logLevel = (options && options.logLevel ? options.logLevel : 'info').toLowerCase();
-      this.level = LogLevels.indexOf(this.logLevel);
+      const logLevel = (options?.logLevel ?? 'info').toLowerCase();
+      this.level = LogLevels.indexOf(logLevel);
     }
 
     initialize() {
-      const { log } = console;
-      if (log !== singleton.native) {
-        singleton.instance = this;
-        this.defineProperty();
-        this.std = {};
-      } else {
-        this.std = singleton.instance.std;
-      }
+      const native = () => {};
       const mummy = console;
       LogLevels.forEach(logLevel => {
-        if (!this.std[logLevel]) this.std[logLevel] = mummy[logLevel];
         const level = LogLevels.indexOf(logLevel);
         this[logLevel] = (...args) => {
           if (this.level < level) return;
-          const logger = this.std[logLevel];
           const LEVEL = `[${logLevel.toUpperCase()}]`;
-          logger(__fname, __line, LEVEL, ...args); // eslint-disable-line
+          mummy[logLevel](__fname, __line, LEVEL, ...args);
         };
-        if (mummy[logLevel]) mummy[logLevel] = singleton.native;
       });
-      mummy.log = singleton.native;
-      mummy.alert = singleton.native;
-    }
-
-    defineProperty() {
-      Object.defineProperty(globalObject, '__line', {
-        get() { return new Error().stack.split('\n')[3].split(':').reverse()[1]; },
-      });
-      Object.defineProperty(globalObject, '__fname', {
-        get() { return new Error().stack.split('\n')[3].split(/[:( ]/).reverse()[2]; },
-      });
+      mummy.log = native;
+      mummy.alert = native;
     }
   }
 
