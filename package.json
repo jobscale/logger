@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jobscale/logger.git"
+    "url": "git+git@github.com:jobscale/logger.git"
   },
   "main": "index.js",
   "scripts": {
