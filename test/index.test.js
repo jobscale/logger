@@ -1,64 +1,45 @@
-const { Logger, logger } = require('..');
+const { Logger, createLogger } = require('..');
 
 describe('test logger', () => {
   describe('logLevel', () => {
-    it('toBeUndefined prompt trace', () => {
-      const localLogger = new Logger({ logLevel: 'trace' });
-      logger.config({ logLevel: 'trace' });
-      const { error } = console;
-      error(new Error('do not work'));
-      expect(localLogger.trace({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-      expect(logger.trace({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-    });
-
-    it('toBeUndefined prompt debug', () => {
+    it('toStrictEqual prompt debug', () => {
       const localLogger = new Logger({ logLevel: 'debug' });
-      logger.config({ logLevel: 'debug' });
-      const { error } = console;
-      error(new Error('do not work'));
-      localLogger.trace(new Error('do not work'));
-      logger.trace(new Error('do not work'));
-      expect(localLogger.debug({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-      expect(logger.debug({ timestamp: new Date().toLocaleString() })).toBeUndefined();
+      localLogger.debug({ msg: 'do work' }, res => {
+        expect(res).toStrictEqual({ allowed: true });
+      });
+      localLogger.trace({ msg: 'not work' }, res => {
+        expect(res).toStrictEqual({ disabled: true });
+      });
     });
 
-    it('toBeUndefined prompt info', () => {
-      const localLogger = new Logger({ logLevel: 'info' });
-      logger.config({ logLevel: 'info' });
-      const { error } = console;
-      error(new Error('do not work'));
-      localLogger.debug(new Error('do not work'));
-      logger.debug(new Error('do not work'));
-      localLogger.trace(new Error('do not work'));
-      logger.trace(new Error('do not work'));
-      expect(localLogger.info({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-      expect(logger.info({ timestamp: new Date().toLocaleString() })).toBeUndefined();
+    it('toStrictEqual prompt info', () => {
+      const localLogger = createLogger('info');
+      localLogger.info({ msg: 'do work' }, res => {
+        expect(res).toStrictEqual({ allowed: true });
+      });
+      localLogger.debug({ msg: 'not work' }, res => {
+        expect(res).toStrictEqual({ disabled: true });
+      });
     });
 
-    it('toBeUndefined prompt warn', () => {
+    it('toStrictEqual prompt warn', () => {
       const localLogger = new Logger({ logLevel: 'warn' });
-      logger.config({ logLevel: 'warn' });
-      const { error } = console;
-      error(new Error('do not work'));
-      localLogger.info(new Error('do not work'));
-      logger.info(new Error('do not work'));
-      localLogger.debug(new Error('do not work'));
-      logger.debug(new Error('do not work'));
-      expect(localLogger.warn({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-      expect(logger.warn({ timestamp: new Date().toLocaleString() })).toBeUndefined();
+      localLogger.warn({ msg: 'do work' }, res => {
+        expect(res).toStrictEqual({ allowed: true });
+      });
+      localLogger.info({ msg: 'not work' }, res => {
+        expect(res).toStrictEqual({ disabled: true });
+      });
     });
 
-    it('toBeUndefined prompt error', () => {
+    it('toStrictEqual prompt error', () => {
       const localLogger = new Logger({ logLevel: 'error' });
-      logger.config({ logLevel: 'error' });
-      const { error } = console;
-      error(new Error('do not work'));
-      localLogger.info(new Error('do not work'));
-      logger.info(new Error('do not work'));
-      localLogger.warn(new Error('do not work'));
-      logger.warn(new Error('do not work'));
-      expect(localLogger.error({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-      expect(logger.error({ timestamp: new Date().toLocaleString() })).toBeUndefined();
+      localLogger.error({ msg: 'do work' }, res => {
+        expect(res).toStrictEqual({ allowed: true });
+      });
+      localLogger.warn({ msg: 'not work' }, res => {
+        expect(res).toStrictEqual({ disabled: true });
+      });
     });
   });
 
@@ -68,26 +49,26 @@ describe('test logger', () => {
       jest.resetModules();
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
-      logger.config({ logLevel: 'info' });
       localLogger.info('beforeEach');
-      logger.info('beforeEach');
     });
 
     afterEach(() => {
       jest.resetModules();
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
-      logger.config({ logLevel: 'info' });
       localLogger.info('afterEach');
-      logger.info('afterEach');
     });
 
-    it('toBeUndefined prompt', () => {
+    it('toStrictEqual prompt', () => {
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
-      logger.config({ logLevel: 'info' });
-      expect(localLogger.info({ timestamp: new Date().toLocaleString() })).toBeUndefined();
-      expect(logger.info({ timestamp: new Date().toLocaleString() })).toBeUndefined();
+
+      localLogger.info({ msg: 'do work' }, res => {
+        expect(res).toStrictEqual({ allowed: true });
+      });
+      localLogger.debug({ msg: 'not work' }, res => {
+        expect(res).toStrictEqual({ disabled: true });
+      });
     });
   });
 });

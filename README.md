@@ -22,6 +22,9 @@ npm i @jobscale/logger
 
 ```javascript
 const { Logger } = require('@jobscale/logger');
+// or
+// const { createLogger } = require('@jobscale/logger');
+// const logger = createLogger('info');
 
 const logger = new Logger({ logLevel: 'info' });
 logger.info({ timestamp: Date.now() });

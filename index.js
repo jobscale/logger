@@ -37,7 +37,13 @@
       LogLevels.forEach(logLevel => {
         const level = LogLevels.indexOf(logLevel);
         this[logLevel] = (...args) => {
-          if (this.level < level) return;
+          const cb = args.length && typeof args[args.length - 1] === 'function'
+            ? args[args.length - 1] : undefined;
+          if (this.level < level) {
+            if (cb) cb({ disabled: true });
+            return;
+          }
+          if (cb) cb({ allowed: true });
           const LEVEL = `[${logLevel.toUpperCase()}]`;
           mummy[logLevel](__fname, __line, LEVEL, ...args);
         };
@@ -45,8 +51,13 @@
       mummy.log = native;
       mummy.alert = native;
     }
+
+    createLogger(logLevel = 'info') {
+      return new Logger({ logLevel });
+    }
   }
 
-  if (typeof module !== 'undefined') module.exports = new Logger();
-  if (typeof window !== 'undefined') window.logger = new Logger();
+  const logger = new Logger();
+  if (typeof module !== 'undefined') module.exports = logger;
+  if (typeof window !== 'undefined') window.logger = logger;
 })();
