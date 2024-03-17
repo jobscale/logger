@@ -16,7 +16,7 @@
     "test": "jest --runInBand --coverage --collectCoverage"
   },
   "pre-commit": [
-    "test"
+    "lint", "test"
   ],
   "author": "jobscale <jobscale@users.noreply.github.com>",
   "devDependencies": {
