@@ -1,6 +1,6 @@
 const { Logger, createLogger } = require('..');
 
-describe('test logger', () => {
+describe('test allowed logger', () => {
   describe('allowed logLevel', () => {
     it('toStrictEqual prompt allowed debug', done => {
       const localLogger = new Logger({ logLevel: 'debug' });
@@ -43,7 +43,7 @@ describe('test logger', () => {
     });
   });
 
-  describe('allowed multiple load', () => {
+  describe('multiple load allowed logger', () => {
     const loader = require;
     beforeEach(() => {
       jest.resetModules();
@@ -116,7 +116,7 @@ describe('test disabled logger', () => {
     });
   });
 
-  describe('disabled multiple load', () => {
+  describe('multiple load disabled logger', () => {
     const loader = require;
     beforeEach(() => {
       jest.resetModules();
