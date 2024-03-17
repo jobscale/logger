@@ -1,33 +1,45 @@
 const { Logger, createLogger } = require('..');
 
-describe('allowed test logger', () => {
+describe('test logger', () => {
   describe('allowed logLevel', () => {
-    it('toStrictEqual prompt allowed debug', () => {
+    it('toStrictEqual prompt allowed debug', done => {
       const localLogger = new Logger({ logLevel: 'debug' });
-      let data;
-      localLogger.debug({ msg: 'do work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ allowed: true });
+      localLogger.debug({ msg: 'do work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ allowed: true });
+          done();
+        },
+      });
     });
 
-    it('toStrictEqual prompt allowed info', () => {
+    it('toStrictEqual prompt allowed info', done => {
       const localLogger = createLogger('info');
-      let data;
-      localLogger.info({ msg: 'do work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ allowed: true });
+      localLogger.info({ msg: 'do work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ allowed: true });
+          done();
+        },
+      });
     });
 
-    it('toStrictEqual prompt allowed warn', () => {
+    it('toStrictEqual prompt allowed warn', done => {
       const localLogger = new Logger({ logLevel: 'warn' });
-      let data;
-      localLogger.warn({ msg: 'do work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ allowed: true });
+      localLogger.warn({ msg: 'do work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ allowed: true });
+          done();
+        },
+      });
     });
 
-    it('toStrictEqual prompt allowed error', () => {
+    it('toStrictEqual prompt allowed error', done => {
       const localLogger = new Logger({ logLevel: 'error' });
-      let data;
-      localLogger.error({ msg: 'do work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ allowed: true });
+      localLogger.error({ msg: 'do work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ allowed: true });
+          done();
+        },
+      });
     });
   });
 
@@ -47,45 +59,60 @@ describe('allowed test logger', () => {
       localLogger.info('afterEach');
     });
 
-    it('toStrictEqual prompt allowed', () => {
+    it('toStrictEqual prompt allowed', done => {
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
 
-      let data;
-      localLogger.info({ msg: 'do work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ allowed: true });
+      localLogger.info({ msg: 'do work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ allowed: true });
+          done();
+        },
+      });
     });
   });
 });
 
-describe('disabled test logger', () => {
+describe('test disabled logger', () => {
   describe('disabled logLevel', () => {
-    it('toStrictEqual prompt disable debug', () => {
+    it('toStrictEqual prompt disable debug', done => {
       const localLogger = new Logger({ logLevel: 'debug' });
-      let data;
-      localLogger.trace({ msg: 'not work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ disabled: true });
+      localLogger.trace({ msg: 'not work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ disabled: true });
+          done();
+        },
+      });
     });
 
-    it('toStrictEqual prompt disable info', () => {
+    it('toStrictEqual prompt disable info', done => {
       const localLogger = createLogger('info');
-      let data;
-      localLogger.debug({ msg: 'not work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ disabled: true });
+      localLogger.debug({ msg: 'not work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ disabled: true });
+          done();
+        },
+      });
     });
 
-    it('toStrictEqual prompt disable warn', () => {
+    it('toStrictEqual prompt disable warn', done => {
       const localLogger = new Logger({ logLevel: 'warn' });
-      let data;
-      localLogger.info({ msg: 'not work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ disabled: true });
+      localLogger.info({ msg: 'not work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ disabled: true });
+          done();
+        },
+      });
     });
 
-    it('toStrictEqual prompt disable error', () => {
+    it('toStrictEqual prompt disable error', done => {
       const localLogger = new Logger({ logLevel: 'error' });
-      let data;
-      localLogger.warn({ msg: 'not work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ disabled: true });
+      localLogger.warn({ msg: 'not work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ disabled: true });
+          done();
+        },
+      });
     });
   });
 
@@ -105,13 +132,16 @@ describe('disabled test logger', () => {
       localLogger.info('afterEach');
     });
 
-    it('toStrictEqual prompt disabled', () => {
+    it('toStrictEqual prompt disabled', done => {
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
 
-      let data;
-      localLogger.debug({ msg: 'not work' }, { _cb: res => { data = res; } });
-      expect(data).toStrictEqual({ disabled: true });
+      localLogger.debug({ msg: 'not work' }, {
+        _cb: res => {
+          expect(res).toStrictEqual({ disabled: true });
+          done();
+        },
+      });
     });
   });
 });
