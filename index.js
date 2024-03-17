@@ -37,8 +37,15 @@
       LogLevels.forEach(logLevel => {
         const level = LogLevels.indexOf(logLevel);
         this[logLevel] = (...args) => {
-          const cb = args.length && typeof args[args.length - 1] === 'function'
-            ? args[args.length - 1] : undefined;
+          const check = () => {
+            if (!args.length) return undefined;
+            const last = args[args.length - 1];
+            if (typeof last !== 'object') return undefined;
+            const { _cb: cb } = last;
+            if (typeof cb !== 'function') return undefined;
+            return cb;
+          };
+          const cb = check();
           if (this.level < level) {
             if (cb) cb({ disabled: true });
             return;
