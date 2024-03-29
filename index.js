@@ -19,7 +19,7 @@
   }
 
   class Logger {
-    constructor(options) {
+    constructor(options = { logLevel: 'info' }) {
       this.logger = this;
       this.Logger = Logger;
       this.config(options);
@@ -27,13 +27,14 @@
     }
 
     config(options) {
-      const logLevel = (options?.logLevel ?? 'info').toLowerCase();
+      const logLevel = (options.logLevel || 'info').toLowerCase();
+      this.timestamp = options.timestamp;
       this.level = LogLevels.indexOf(logLevel);
     }
 
     initialize() {
       const native = () => {};
-      const mummy = console;
+      const logger = console;
       LogLevels.forEach(logLevel => {
         const level = LogLevels.indexOf(logLevel);
         this[logLevel] = (...args) => {
@@ -52,15 +53,17 @@
           }
           if (cb) cb({ allowed: true });
           const LEVEL = `[${logLevel.toUpperCase()}]`;
-          mummy[logLevel](__fname, __line, LEVEL, ...args);
+          const recipe = [__fname, __line, LEVEL, ...args];
+          if (this.timestamp) recipe.unshift(new Date().toISOString());
+          logger[logLevel](...recipe);
         };
       });
-      mummy.log = native;
-      mummy.alert = native;
+      logger.log = native;
+      logger.alert = native;
     }
 
-    createLogger(logLevel = 'info') {
-      return new Logger({ logLevel });
+    createLogger(logLevel = 'info', options = {}) {
+      return new Logger({ logLevel, ...options });
     }
   }
 

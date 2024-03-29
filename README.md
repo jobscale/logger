@@ -24,17 +24,36 @@ npm i @jobscale/logger
 const { Logger } = require('@jobscale/logger');
 // or
 // const { createLogger } = require('@jobscale/logger');
-// const logger = createLogger('info');
 
-const logger = new Logger({ logLevel: 'info' });
-logger.info({ timestamp: Date.now() });
-logger.trace('Do not output');
+const logger = new Logger({ logLevel: 'info', timestamp: true });
+// or
+// const logger = createLogger('info', { timestamp: true });
+
+logger.info({ 'epoch milliseconds': Date.now() });
+logger.debug('Do not output');
 ```
 
 ## Using Browser
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js"></script>
 <script>
-  logger.info('hello', Date.now());
+  // global logger
+  (() => {
+    logger.info('hello 01', Date.now());
+  })();
+
+  // logger instance
+  (() => {
+    const { Logger } = logger;
+    const log = new Logger({ logLevel: 'info', timestamp: true });
+    log.info('hello 02', Date.now());
+  })();
+
+  // helper method
+  (() => {
+    const { createLogger } = logger;
+    const log = createLogger('info', { timestamp: true });
+    log.info('hello 03', Date.now());
+  })();
 </script>
 ```
