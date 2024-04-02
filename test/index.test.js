@@ -62,7 +62,6 @@ describe('test allowed logger', () => {
     it('toStrictEqual prompt allowed', done => {
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
-
       localLogger.info({ msg: 'do work' }, {
         _cb: res => {
           expect(res).toStrictEqual({ allowed: true });
@@ -135,7 +134,6 @@ describe('test disabled logger', () => {
     it('toStrictEqual prompt disabled', done => {
       const obj = loader('..');
       const localLogger = new obj.Logger({ logLevel: 'info' });
-
       localLogger.debug({ msg: 'not work' }, {
         _cb: res => {
           expect(res).toStrictEqual({ disabled: true });
