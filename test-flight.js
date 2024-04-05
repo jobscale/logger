@@ -26,7 +26,6 @@ const Flight = {
 const wait = ms => new Promise(resolve => { setTimeout(resolve, ms); });
 
 const run = async opt => {
-  // eslint-disable-next-line no-restricted-syntax
   for (const method of Object.values(Flight)) {
     method(opt);
     await wait(1000);

@@ -8,6 +8,7 @@ module.exports = {
     'arrow-parens': 'off',
     'class-methods-use-this': 'off',
     'no-await-in-loop': 'off',
+    'no-restricted-syntax': 'off',
   },
   env: {
     node: true,
