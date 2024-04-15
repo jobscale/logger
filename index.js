@@ -11,10 +11,10 @@
   if (typeof __line === 'undefined') {
     const globalObject = typeof global !== 'undefined' ? global : window;
     Object.defineProperty(globalObject, '__line', {
-      get() { return new Error().stack.split('\n')[3].split(':').reverse()[1]; },
+      get() { return new Error().stack.split('\n')[3]?.split(':').reverse()[1]; },
     });
     Object.defineProperty(globalObject, '__fname', {
-      get() { return new Error().stack.split('\n')[3].split(/[:( ]/).reverse()[2]; },
+      get() { return new Error().stack.split('\n')[3]?.split(/[:( ]/).reverse()[2]; },
     });
   }
 
