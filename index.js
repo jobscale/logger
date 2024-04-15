@@ -30,6 +30,7 @@
       const logLevel = (options.logLevel || 'info').toLowerCase();
       this.timestamp = options.timestamp;
       this.level = LogLevels.indexOf(logLevel);
+      this.callback = options.callback;
     }
 
     initialize() {
@@ -51,11 +52,14 @@
             if (cb) cb({ disabled: true });
             return;
           }
-          if (cb) cb({ allowed: true });
           const LEVEL = `[${logLevel.toUpperCase()}]`;
           const recipe = [__fname, __line, LEVEL, ...args];
           if (this.timestamp) recipe.unshift(new Date().toISOString());
           logger[logLevel](...recipe);
+          if (typeof this.callback === 'function') {
+            this.callback({ logLevel, recipe });
+          }
+          if (cb) cb({ allowed: true });
         };
       });
       logger.log = native;

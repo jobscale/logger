@@ -1,4 +1,4 @@
-const { Logger, createLogger } = require('..');
+const { Logger, createLogger, logger } = require('..');
 
 describe('test allowed logger', () => {
   describe('allowed logLevel', () => {
@@ -61,7 +61,12 @@ describe('test allowed logger', () => {
 
     it('toStrictEqual prompt allowed', done => {
       const obj = loader('..');
-      const localLogger = new obj.Logger({ logLevel: 'info' });
+      const localLogger = new obj.Logger({
+        logLevel: 'info',
+        callback: ({ logLevel, recipe }) => {
+          logger.info({ logLevel, recipe });
+        },
+      });
       localLogger.info({ msg: 'do work' }, {
         _cb: res => {
           expect(res).toStrictEqual({ allowed: true });
