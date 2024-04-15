@@ -30,6 +30,7 @@
       const logLevel = (options.logLevel || 'info').toLowerCase();
       this.timestamp = options.timestamp;
       this.level = LogLevels.indexOf(logLevel);
+      this.noPathName = options.noPathName;
       this.callback = options.callback;
     }
 
@@ -53,7 +54,8 @@
             return;
           }
           const LEVEL = `[${logLevel.toUpperCase()}]`;
-          const recipe = [__fname, __line, LEVEL, ...args];
+          const recipe = [LEVEL, ...args];
+          if (!this.noPathName) recipe.unshift(`${__fname}:${__line}`);
           if (this.timestamp) recipe.unshift(new Date().toISOString());
           logger[logLevel](...recipe);
           if (typeof this.callback === 'function') {
