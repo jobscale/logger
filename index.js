@@ -30,7 +30,9 @@
       const logLevel = (options.logLevel || 'info').toLowerCase();
       this.timestamp = options.timestamp;
       this.level = LogLevels.indexOf(logLevel);
-      this.noPathName = options.noPathName;
+      this.noPathName = options.noPathName
+        || typeof window !== 'undefined'
+        || !!process?.env?.AWS_EXECUTION_ENV;
       this.callback = options.callback;
     }
 

@@ -21,4 +21,10 @@ module.exports = {
   plugins: [
     'jest',
   ],
+  overrides: [{
+    files: ['*.mjs'],
+    parserOptions: {
+      sourceType: 'module',
+    },
+  }],
 };
