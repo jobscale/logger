@@ -1,5 +1,7 @@
 /* global __line, __fname */
 (() => {
+  const self = {};
+
   const LogLevels = [
     'error',
     'warn',
@@ -38,8 +40,7 @@
     }
 
     initialize() {
-      const globalObject = typeof global !== 'undefined' ? global : window;
-      this.setupGlobal(globalObject);
+      this.setupGlobal();
       LogLevels.forEach(logLevel => {
         const level = LogLevels.indexOf(logLevel);
         this[logLevel] = (...args) => {
@@ -61,7 +62,7 @@
           if (!this.noType) recipe.unshift(LEVEL);
           if (!this.noPathName) recipe.unshift(`${__fname}:${__line}`);
           if (this.timestamp) recipe.unshift(new Date().toISOString());
-          globalObject.logger[logLevel](...recipe);
+          self.logger[logLevel](...recipe);
           if (typeof this.callback === 'function') {
             this.callback({ logLevel, recipe });
           }
@@ -70,8 +71,8 @@
       });
     }
 
-    setupGlobal(globalObject) {
-      if (globalObject.logger) return;
+    setupGlobal() {
+      if (self.logger) return;
       const logger = (std => {
         const instant = {
           error: std.error,
@@ -90,7 +91,7 @@
         std.alert = native;
         return instant;
       })(console);
-      Object.assign(globalObject, { logger });
+      Object.assign(self, { logger });
     }
 
     createLogger(logLevel = 'info', options = {}) {
