@@ -37,8 +37,8 @@
     }
 
     initialize() {
-      const native = () => {};
-      const logger = console;
+      const globalObject = typeof global !== 'undefined' ? global : window;
+      this.setupGlobal(globalObject);
       LogLevels.forEach(logLevel => {
         const level = LogLevels.indexOf(logLevel);
         this[logLevel] = (...args) => {
@@ -59,15 +59,36 @@
           const recipe = [LEVEL, ...args];
           if (!this.noPathName) recipe.unshift(`${__fname}:${__line}`);
           if (this.timestamp) recipe.unshift(new Date().toISOString());
-          logger[logLevel](...recipe);
+          globalObject.logger[logLevel](...recipe);
           if (typeof this.callback === 'function') {
             this.callback({ logLevel, recipe });
           }
           if (cb) cb({ allowed: true });
         };
       });
-      logger.log = native;
-      logger.alert = native;
+    }
+
+    setupGlobal(globalObject) {
+      if (globalObject.logger) return;
+      const logger = (std => {
+        const instant = {
+          error: std.error,
+          warn: std.warn,
+          info: std.info,
+          debug: std.debug,
+          trace: std.trace,
+        };
+        const native = () => {};
+        std.error = native;
+        std.warn = native;
+        std.info = native;
+        std.debug = native;
+        std.trace = native;
+        std.log = native;
+        std.alert = native;
+        return instant;
+      })(console);
+      Object.assign(globalObject, { logger });
     }
 
     createLogger(logLevel = 'info', options = {}) {

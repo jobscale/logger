@@ -9,6 +9,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-await-in-loop': 'off',
     'no-restricted-syntax': 'off',
+    'no-param-reassign': 'off',
   },
   env: {
     node: true,
