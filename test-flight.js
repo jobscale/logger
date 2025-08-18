@@ -1,40 +1,45 @@
 // test-flight
-const { createLogger, Logger } = require('.');
+import { createLogger, Logger } from './index.mjs';
 
 const Flight = {
-  test01(opt) {
-    const logger = createLogger('info', { timestamp: true });
-    logger.info(opt, 'Test 01 Hello World');
+  test01(msg, opt) {
+    const logger = createLogger('info', opt);
+    logger.info(msg, JSON.stringify(opt), 'Test 01');
   },
 
-  test02(opt) {
-    const logger = createLogger('info');
-    logger.info(opt, 'Test 02 Hello World');
+  test02(msg, opt) {
+    const logger = createLogger('warn', opt);
+    logger.warn(msg, JSON.stringify(opt), 'Test 02');
   },
 
-  test03(opt) {
-    const logger = new Logger({ logLevel: 'info', timestamp: true });
-    logger.info(opt, 'Test 03 Hello World');
+  test03(msg, opt) {
+    const logger = new Logger({ logLevel: 'info', ...opt });
+    logger.info(msg, JSON.stringify(opt), 'Test 03');
   },
 
-  test04(opt) {
-    const logger = new Logger({ logLevel: 'info' });
-    logger.info(opt, 'Test 04 Hello World');
+  test04(msg, opt) {
+    const logger = new Logger({ logLevel: 'warn', ...opt });
+    logger.warn(msg, JSON.stringify(opt), 'Test 04');
   },
-};
-
-const wait = ms => new Promise(resolve => { setTimeout(resolve, ms); });
-
-const run = async opt => {
-  for (const method of Object.values(Flight)) {
-    method(opt);
-    await wait(1000);
-  }
 };
 
 const main = async () => {
-  for (let i = 0; i < 3; i += 1) {
-    await run({ i });
+  const list = [{
+  }, {
+    noPathName: true,
+  }, {
+    noType: true,
+    noPathName: true,
+  }, {
+    timestamp: true,
+    noPathName: true,
+  }];
+  for (const [key, func] of Object.entries(Flight)) {
+    process.stdout.write('\n');
+    for (const opt of list) {
+      await func({ key }, opt);
+      await new Promise(resolve => { setTimeout(resolve, 100); });
+    }
   }
 };
 

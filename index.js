@@ -28,8 +28,9 @@
 
     config(options) {
       const logLevel = (options.logLevel || 'info').toLowerCase();
-      this.timestamp = options.timestamp;
       this.level = LogLevels.indexOf(logLevel);
+      this.timestamp = options.timestamp;
+      this.noType = options.noType;
       this.noPathName = options.noPathName
         || typeof window !== 'undefined'
         || !!process?.env?.AWS_EXECUTION_ENV;
@@ -56,7 +57,8 @@
             return;
           }
           const LEVEL = `[${logLevel.toUpperCase()}]`;
-          const recipe = [LEVEL, ...args];
+          const recipe = [...args];
+          if (!this.noType) recipe.unshift(LEVEL);
           if (!this.noPathName) recipe.unshift(`${__fname}:${__line}`);
           if (this.timestamp) recipe.unshift(new Date().toISOString());
           globalObject.logger[logLevel](...recipe);

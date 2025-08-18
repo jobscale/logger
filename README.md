@@ -34,6 +34,15 @@ logger.debug('Do not output');
 ```
 
 ## Using Browser
+
+- ES Module Browser
+```html
+<script type="module">
+  import { Logger, logger, createLogger } from "https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.mjs";
+</script>
+```
+
+- CommonJS Browser
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js"></script>
 <script>
