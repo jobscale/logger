@@ -78,7 +78,7 @@
           error: std.error,
           warn: std.warn,
           info: std.info,
-          debug: std.debug,
+          debug: std.info,
           trace: std.trace,
         };
         const native = () => {};
