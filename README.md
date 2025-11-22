@@ -18,7 +18,7 @@ default 'info'
 npm i @jobscale/logger
 ```
 
-## Examples
+## Nodejs Examples
 
 ```javascript
 const { Logger } = require('@jobscale/logger');
@@ -38,57 +38,14 @@ logger.debug('Do not output');
 - ES Module Browser
 ```html
 <script type="module">
-  import { Logger, logger, createLogger } from "https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.mjs";
-</script>
-```
-
-- CommonJS Browser
-```html
-<script src="https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js"></script>
-<script>
-  // global logger
-  (() => {
-    logger.info('hello 01', Date.now());
-  })();
-
-  // logger instance
-  (() => {
-    const { Logger } = logger;
-    const log = new Logger({ logLevel: 'info', timestamp: true });
-    log.info('hello 02', Date.now());
-  })();
-
-  // helper method
-  (() => {
-    const { createLogger } = logger;
-    const log = createLogger('info', { timestamp: true });
-    log.info('hello 03', Date.now());
-  })();
-</script>
-```
-
-## Using Browser ES
-```javascript
-<script type="module">
-  // global logger
-  import logger from 'https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js';
+  import { Logger, logger, createLogger } from 'https://esm.sh/@jobscale/logger';
 
   logger.info('hello 01', Date.now());
-</script>
 
-<script type="module">
-  // logger instance
-  import { logger } from 'https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js';
+  const logger2 = new Logger({ logLevel: 'info', timestamp: true });
+  logger2.info('hello 02', Date.now());
 
-  const log = new Logger({ logLevel: 'info', timestamp: true });
-  log.info('hello 02', Date.now());
-</script>
-
-<script type="module">
-  // helper method
-  import { createLogger } from 'https://cdn.jsdelivr.net/npm/@jobscale/logger/index.min.js';
-
-  const log = createLogger('info', { timestamp: true });
-  log.info('hello 03', Date.now());
+  const logger3 = createLogger('info', { timestamp: true });
+  logger3.info('hello 03', Date.now());
 </script>
 ```
