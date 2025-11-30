@@ -77,7 +77,7 @@ export class Logger {
         error: std.error,
         warn: std.warn,
         info: std.info,
-        debug: (typeof window !== 'undefined') ? std.log : std.debug,
+        debug: typeof window !== 'undefined' ? std.log : std.debug,
         trace: std.trace,
       };
       const native = () => {};
