@@ -1,4 +1,4 @@
-/* global __line, __fname */
+/* global window, __line, __fname */
 const self = {};
 
 const LogLevels = [
