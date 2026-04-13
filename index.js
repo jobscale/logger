@@ -1,4 +1,6 @@
 /* global window, __line, __fname */
+const isIDE = typeof window !== 'undefined' || process?.env?.TERM_PROGRAM === 'vscode';
+
 const self = {};
 
 const LogLevels = [
@@ -72,6 +74,10 @@ export class Logger {
 
   setupGlobal() {
     if (self.logger) return;
+    if (isIDE) {
+      Object.assign(self, { logger: console });
+      return;
+    }
     const logger = (std => {
       const instant = {
         error: std.error,
@@ -94,6 +100,7 @@ export class Logger {
   }
 
   createLogger(logLevel = 'info', options = {}) {
+    if (isIDE) return self.logger;
     return new Logger({ logLevel, ...options });
   }
 }

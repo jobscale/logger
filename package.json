@@ -1,6 +1,6 @@
 {
   "name": "@jobscale/logger",
-  "version": "0.10.5",
+  "version": "0.11.0",
   "description": "@jobscale/logger",
   "keywords": [
     "trace",
@@ -9,10 +9,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jobscale/logger.git"
-  },
-  "exports": {
-    "import": "./index.mjs",
-    "require": "./index.js"
   },
   "author": "jobscale <jobscale@users.noreply.github.com>",
   "license": "MIT",

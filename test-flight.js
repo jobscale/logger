@@ -1,5 +1,5 @@
 // test-flight
-import { createLogger, Logger } from './index.mjs';
+import { createLogger, Logger } from './index.js';
 
 const Flight = {
   test01(msg, opt) {

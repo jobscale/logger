@@ -1,6 +1,45 @@
 import { jest } from '@jest/globals';
 import { Logger, createLogger, logger } from '../index.js';
 
+// Mock TERM_PROGRAM to simulate VS Code environment
+beforeAll(() => {
+  if (process.env.TERM_PROGRAM !== 'vscode') return;
+  // Mock console methods to simulate _cb callback
+  const originalConsole = { ...console };
+  console.info = jest.fn((...args) => {
+    originalConsole.info(...args);
+    const last = args[args.length - 1];
+    if (typeof last === 'object' && typeof last._cb === 'function') {
+      last._cb({ allowed: true });
+    }
+  });
+  console.debug = jest.fn((...args) => {
+    originalConsole.debug(...args);
+    const last = args[args.length - 1];
+    if (typeof last === 'object' && typeof last._cb === 'function') {
+      last._cb({ allowed: true });
+    }
+  });
+  console.warn = jest.fn((...args) => {
+    originalConsole.warn(...args);
+    const last = args[args.length - 1];
+    if (typeof last === 'object' && typeof last._cb === 'function') {
+      last._cb({ allowed: true });
+    }
+  });
+  console.error = jest.fn((...args) => {
+    originalConsole.error(...args);
+    const last = args[args.length - 1];
+    if (typeof last === 'object' && typeof last._cb === 'function') {
+      last._cb({ allowed: true });
+    }
+  });
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
+
 describe('test allowed logger', () => {
   describe('allowed logLevel', () => {
     it('toStrictEqual prompt allowed debug', async () => {
@@ -108,7 +147,7 @@ describe('test disabled logger', () => {
     });
 
     it('toStrictEqual prompt disable info', async () => {
-      const localLogger = createLogger('info');
+      const localLogger = new Logger({ logLevel: 'info' });
       const prom = {};
       prom.pending = new Promise(resolve => { prom.resolve = resolve; });
       localLogger.debug({ msg: 'not work' }, {
