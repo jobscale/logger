@@ -1,7 +1,8 @@
 /* global window, __line, __fname */
-const isIDE = typeof window !== 'undefined' || process?.env?.TERM_PROGRAM === 'vscode';
 
-const self = {};
+const self = {
+  isIDE: typeof window !== 'undefined' || process?.env?.TERM_PROGRAM === 'vscode',
+};
 
 const LogLevels = [
   'error',
@@ -44,7 +45,7 @@ export class Logger {
     this.setupGlobal();
     LogLevels.forEach(logLevel => {
       const level = LogLevels.indexOf(logLevel);
-      this[logLevel] = (...args) => {
+      this[logLevel] = self.isIDE ? self.logger[logLevel] : (...args) => {
         const check = () => {
           if (!args.length) return undefined;
           const last = args[args.length - 1];
@@ -74,7 +75,7 @@ export class Logger {
 
   setupGlobal() {
     if (self.logger) return;
-    if (isIDE) {
+    if (self.isIDE) {
       Object.assign(self, { logger: console });
       return;
     }
@@ -100,7 +101,6 @@ export class Logger {
   }
 
   createLogger(logLevel = 'info', options = {}) {
-    if (isIDE) return self.logger;
     return new Logger({ logLevel, ...options });
   }
 }
