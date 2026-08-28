@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { jest } from '@jest/globals';
 import { Logger, createLogger, logger } from '../index.js';
 
