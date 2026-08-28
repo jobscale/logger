@@ -105,7 +105,7 @@ export class Logger {
   }
 }
 
-export const logger = new Logger('debug');
+export const logger = new Logger({ logLevel: 'debug' });
 export const { createLogger } = logger;
 export default {
   Logger,
