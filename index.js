@@ -101,7 +101,9 @@ export class Logger {
   }
 
   createLogger(logLevel = 'info', options = {}) {
-    return new Logger({ logLevel, ...options });
+    if (typeof logLevel === 'object') options = logLevel;
+    else Object.assign(options, { logLevel });
+    return new Logger({ ...options });
   }
 }
 
